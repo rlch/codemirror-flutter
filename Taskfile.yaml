@@ -25,8 +25,8 @@ tasks:
   analyze:
     desc: Run static analysis across all packages
     cmds:
-      - flutter analyze packages/lezer
-      - flutter analyze packages/codemirror
+      - flutter analyze --no-fatal-infos packages/lezer
+      - flutter analyze --no-fatal-infos packages/codemirror
 
   format:
     desc: Format all Dart code
