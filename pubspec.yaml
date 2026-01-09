@@ -1,0 +1,55 @@
+name: codemirror_flutter_workspace
+description: Monorepo workspace for codemirror-flutter packages.
+publish_to: none
+
+environment:
+  sdk: ^3.8.0
+
+workspace:
+  - packages/codemirror
+  - packages/codemirror/example
+  - packages/lezer
+
+dev_dependencies:
+  melos: ^7.0.0
+
+melos:
+  name: codemirror_flutter
+  repository: https://github.com/rlch/codemirror-flutter
+  
+  ide:
+    intellij:
+      enabled: true
+
+  scripts:
+    analyze:
+      description: Run static analysis on all packages
+      exec: flutter analyze --fatal-infos
+
+    test:
+      description: Run tests in all packages
+      exec: flutter test
+
+    format:
+      description: Format all Dart files
+      exec: dart format .
+
+    format:check:
+      description: Check formatting without changes
+      exec: dart format --set-exit-if-changed .
+
+    publish:dry:
+      description: Dry-run publish for all packages
+      run: $HOME/.pub-cache/bin/melos publish --dry-run
+
+    publish:
+      description: Publish all packages to pub.dev
+      run: $HOME/.pub-cache/bin/melos publish --no-dry-run
+
+    clean:
+      description: Clean all packages
+      exec: flutter clean
+
+    get:
+      description: Get dependencies for all packages
+      exec: flutter pub get

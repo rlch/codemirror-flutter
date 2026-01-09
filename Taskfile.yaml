@@ -1,0 +1,60 @@
+version: '3'
+
+vars:
+  MELOS: '{{.HOME}}/.pub-cache/bin/melos'
+
+tasks:
+  default:
+    desc: Show available commands
+    cmds:
+      - task --list
+    silent: true
+
+  bootstrap:
+    desc: Bootstrap the monorepo with melos
+    cmds:
+      - dart pub global activate melos
+      - '{{.MELOS}} bootstrap'
+
+  test:
+    desc: Run tests across all packages
+    cmds:
+      - flutter test packages/lezer
+      - flutter test packages/codemirror
+
+  analyze:
+    desc: Run static analysis across all packages
+    cmds:
+      - flutter analyze packages/lezer
+      - flutter analyze packages/codemirror
+
+  format:
+    desc: Format all Dart code
+    cmds:
+      - dart format .
+
+  format:check:
+    desc: Check formatting without making changes
+    cmds:
+      - dart format --set-exit-if-changed .
+
+  check:
+    desc: Run analyze then test
+    cmds:
+      - task: analyze
+      - task: test
+
+  clean:
+    desc: Clean all packages
+    cmds:
+      - '{{.MELOS}} clean'
+
+  publish:dry:
+    desc: Dry run publish to check what would be published
+    cmds:
+      - '{{.MELOS}} publish --dry-run'
+
+  publish:
+    desc: Publish packages (will prompt for confirmation)
+    cmds:
+      - '{{.MELOS}} publish --no-dry-run'

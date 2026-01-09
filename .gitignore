@@ -1,0 +1,38 @@
+# Dart/Flutter
+.dart_tool/
+.packages
+build/
+*.iml
+.idea/
+*.lock
+!pubspec.lock
+
+# Flutter
+.flutter-plugins
+.flutter-plugins-dependencies
+.metadata
+
+# Coverage
+coverage/
+*.lcov
+
+# Generated
+*.g.dart
+*.freezed.dart
+*.mocks.dart
+
+# Melos
+.melos/
+pubspec_overrides.yaml
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
