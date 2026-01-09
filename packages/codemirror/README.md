@@ -1,65 +1,86 @@
 # CodeMirror for Flutter
 
-A **native Dart/Flutter port** of [CodeMirror 6](https://codemirror.net/) - the versatile code editor.
+[![pub.dev](https://img.shields.io/pub/v/codemirror.svg)](https://pub.dev/packages/codemirror)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/rlch/codemirror-flutter/blob/main/LICENSE)
 
-> ⚠️ **Work in Progress**: This is an early-stage port. See [PORT.md](PORT.md) for implementation status.
+A **pure Dart/Flutter port** of [CodeMirror 6](https://codemirror.net/) — the modern, extensible code editor.
 
-## Overview
+## Features
 
-This package is a ground-up reimplementation of CodeMirror 6 in Dart, following Flutter's architecture and idioms. It is NOT a web wrapper - it's pure Dart/Flutter using `EditableText` and custom render objects.
+- 🚀 **Native Dart** — No JavaScript interop, runs anywhere Flutter runs
+- 📝 **Full CodeMirror 6 API** — EditorState, transactions, facets, extensions
+- 🎨 **Syntax Highlighting** — JavaScript, TypeScript, JSX/TSX via Lezer parser
+- ✨ **Language Features** — Autocompletion, bracket matching, folding, indentation
+- 🔍 **Search & Replace** — Find, replace, regex support
+- 📋 **Multiple Selections** — Multi-cursor editing
+- 🎯 **LSP Ready** — Hover tooltips, diagnostics, go-to-definition hooks
 
-### Goals
+## Installation
 
-- **Native performance** - No JavaScript bridge, pure Dart
-- **Flutter-idiomatic** - Uses Flutter's widget and rendering patterns
-- **Full feature parity** - Eventually match CodeMirror 6's capabilities
-- **Extensible** - Same Facet-based extension system
+```yaml
+dependencies:
+  codemirror: ^0.0.1
+```
+
+## Quick Start
+
+```dart
+import 'package:codemirror/codemirror.dart';
+
+// Initialize (call once at app startup)
+void main() {
+  ensureStateInitialized();
+  ensureLanguageInitialized();
+  runApp(MyApp());
+}
+
+// Create editor state
+final state = EditorState.create(EditorStateConfig(
+  doc: 'const greeting = "Hello, world!";',
+  extensions: ExtensionList([
+    lineNumbers(),
+    javascript(),
+    autocompletion(),
+  ]),
+));
+
+// Use in Flutter
+EditorView(
+  state: state,
+  onUpdate: (update) {
+    print('Document changed: ${update.state.doc}');
+  },
+)
+```
 
 ## Architecture
 
 The editor is organized into three main layers:
 
-### 1. Text Layer (`lib/src/text/`)
+### Text Layer (`lib/src/text/`)
 B-tree based immutable document storage with O(log n) operations.
 
-### 2. State Layer (`lib/src/state/`)
+### State Layer (`lib/src/state/`)
 Immutable editor state with transaction-based updates:
-- `EditorState` - Immutable state container
-- `Transaction` - Describes state changes
-- `Facet` - Extension aggregation points
-- `StateField` - Persistent state slots
+- `EditorState` — Immutable state container
+- `Transaction` — Describes state changes
+- `Facet` — Extension aggregation points
+- `StateField` — Persistent state slots
 
-### 3. View Layer (`lib/src/view/`)
-Flutter widgets for rendering and input:
-- `EditorView` - Main editor widget
-- Uses `EditableText` as base for text input
-- Custom rendering for decorations and gutters
+### View Layer (`lib/src/view/`)
+Flutter widgets and rendering:
+- `EditorView` — Main editor widget
+- Syntax highlighting via `HighlightingTextEditingController`
+- Gutter, tooltips, panels
 
-## Development
+## Related Packages
 
-### Reference Implementation
-
-The original CodeMirror 6 source is cloned into `ref/` for reference during porting:
-
-```bash
-# Already done, but for reference:
-git clone --depth 1 https://github.com/codemirror/state.git ref/state
-git clone --depth 1 https://github.com/codemirror/view.git ref/view
-git clone --depth 1 https://github.com/codemirror/text.git ref/text
-git clone --depth 1 https://github.com/codemirror/commands.git ref/commands
-```
-
-### Porting Strategy
-
-We port file-by-file from TypeScript to idiomatic Dart:
-1. Read the JS file completely
-2. Identify types and interfaces  
-3. Create equivalent Dart classes with proper null safety
-4. Replace DOM APIs with Flutter equivalents
-5. Write tests alongside implementation
-
-See [AGENTS.md](AGENTS.md) for detailed porting guidelines and [PORT.md](PORT.md) for implementation phases.
+- [lezer](https://pub.dev/packages/lezer) — Incremental GLR parser (used for syntax highlighting)
 
 ## License
 
-MIT - same as CodeMirror 6
+MIT — see [LICENSE](https://github.com/rlch/codemirror-flutter/blob/main/LICENSE)
+
+## Credits
+
+Based on [CodeMirror 6](https://codemirror.net/) by Marijn Haverbeke.
